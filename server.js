@@ -19,6 +19,27 @@ const PORT = process.env.PORT || 3000;
 const BRAND = 'Flow Factory RP';
 const LOGO = process.env.SERVER_LOGO || '/img/logo.png';
 const WL_COOLDOWN_MS = (parseInt(process.env.WL_COOLDOWN_MINUTES || '10', 10)) * 60 * 1000;
+
+function parseYouTube(url = '') {
+    try {
+        const u = new URL(url);
+        const videoId = u.searchParams.get('v') || (u.pathname.includes('/embed/') ? u.pathname.split('/embed/')[1] : '');
+        const playlistId = u.searchParams.get('list') || '';
+        return { videoId: videoId || 'X2MGCIDOMZ4', playlistId };
+    } catch {
+        return { videoId: 'X2MGCIDOMZ4', playlistId: 'RDX2MGCIDOMZ4' };
+    }
+}
+
+const musicParsed = parseYouTube(process.env.MUSIC_YOUTUBE_URL || 'https://www.youtube.com/watch?v=X2MGCIDOMZ4&list=RDX2MGCIDOMZ4&start_radio=1');
+const MUSIC = {
+    enabled: String(process.env.MUSIC_ENABLED || 'true').toLowerCase() !== 'false',
+    url: process.env.MUSIC_YOUTUBE_URL || 'https://www.youtube.com/watch?v=X2MGCIDOMZ4&list=RDX2MGCIDOMZ4&start_radio=1',
+    volume: parseInt(process.env.MUSIC_VOLUME || '18', 10),
+    autoplay: String(process.env.MUSIC_AUTOPLAY || 'true').toLowerCase() !== 'false',
+    videoId: musicParsed.videoId,
+    playlistId: musicParsed.playlistId
+};
 const ADMIN_ROLE_IDS = (process.env.ADMIN_ROLE_IDS || '1526381200824864852,1526381198874644541,1526382865170825306,1526382863002636400,1526382860397973506,1526382858133049404')
     .split(',').map(s => s.trim()).filter(Boolean);
 
@@ -195,8 +216,12 @@ app.get('/logout', (req, res) => {
     req.logout(() => res.redirect('/'));
 });
 
-app.get('/', (req, res) => res.render('index', { user: req.user, brand: BRAND, logo: LOGO }));
-app.get('/rules', (req, res) => res.render('rules', { user: req.user, brand: BRAND, logo: LOGO }));
+app.get('/api/public-config', (req, res) => {
+    res.json({ music: MUSIC, brand: BRAND, logo: LOGO });
+});
+
+app.get('/', (req, res) => res.render('index', { user: req.user, brand: BRAND, logo: LOGO, music: MUSIC }));
+app.get('/rules', (req, res) => res.render('rules', { user: req.user, brand: BRAND, logo: LOGO, music: MUSIC }));
 
 app.get('/dashboard', requireAuth, requireGuild, async (req, res) => {
     const applications = await dbAsync.all(

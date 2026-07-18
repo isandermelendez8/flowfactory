@@ -35,6 +35,20 @@
         </div>
         <a class="scroll" href="/rules">Descubre más <span>⌄</span></a>
     </main>
+    <script>
+        // Fallback si se abre el HTML estático; la ruta / inyecta desde .env
+        window.FF_MUSIC = {
+            enabled: true,
+            videoId: 'X2MGCIDOMZ4',
+            playlistId: 'RDX2MGCIDOMZ4',
+            volume: 18,
+            autoplay: true
+        };
+        fetch('/api/public-config').then(r => r.json()).then(d => {
+            if (d && d.music) window.FF_MUSIC = d.music;
+        }).catch(() => {});
+    </script>
     <script src="/js/landing.js"></script>
+    <script src="/js/music.js"></script>
 </body>
 </html>

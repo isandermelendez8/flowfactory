@@ -55,6 +55,10 @@
 
         <a class="scroll" href="/rules">Descubre más <span>⌄</span></a>
     </main>
+    <script>
+        window.FF_MUSIC = <%- JSON.stringify(typeof music !== 'undefined' ? music : { enabled: false }) %>;
+    </script>
     <script src="/js/landing.js"></script>
+    <script src="/js/music.js"></script>
 </body>
 </html>
