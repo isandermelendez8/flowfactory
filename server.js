@@ -17,7 +17,7 @@ const app = express();
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 const BRAND = 'Flow Factory RP';
-const LOGO = process.env.SERVER_LOGO || 'https://cdn.discordapp.com/attachments/1512237319346720829/1527910879247728792/F9D0824B-0262-4885-A728-F3DF5003AC7E.png';
+const LOGO = process.env.SERVER_LOGO || '/img/logo.png';
 const WL_COOLDOWN_MS = (parseInt(process.env.WL_COOLDOWN_MINUTES || '10', 10)) * 60 * 1000;
 const ADMIN_ROLE_IDS = (process.env.ADMIN_ROLE_IDS || '1526381200824864852,1526381198874644541,1526382865170825306,1526382863002636400,1526382860397973506,1526382858133049404')
     .split(',').map(s => s.trim()).filter(Boolean);

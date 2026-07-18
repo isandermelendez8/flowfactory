@@ -31,10 +31,20 @@ body {
     position: absolute;
     inset: 0;
     background:
-        url('/img/hero-bg.jpg') center/cover no-repeat;
+        url('/img/hero-bg.png') center/cover no-repeat,
+        url('/img/brand-banner.png') center/cover no-repeat;
     transform: scale(1.06);
     animation: bgDrift 18s ease-in-out infinite alternate;
     z-index: -3;
+}
+
+.hero-logo {
+    width: min(160px, 38vw);
+    height: auto;
+    margin: 0 auto 1rem;
+    display: block;
+    filter: drop-shadow(0 12px 28px rgba(0,0,0,0.65));
+    animation: fadeUp 0.8s ease both;
 }
 
 .hero-overlay {
