@@ -26,7 +26,8 @@ app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+// index:false para que `/` use la vista EJS (landing), no public/index.html
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -188,7 +189,7 @@ app.get('/login', passport.authenticate('discord'));
 app.get('/auth/discord', passport.authenticate('discord'));
 app.get('/auth/discord/callback',
     passport.authenticate('discord', { failureRedirect: '/' }),
-    (req, res) => res.redirect('/dashboard')
+    (req, res) => res.redirect('/whitelist')
 );
 app.get('/logout', (req, res) => {
     req.logout(() => res.redirect('/'));
