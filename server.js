@@ -1,5 +1,5 @@
 const express = require('express');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const passport = require('passport');
 const DiscordStrategy = require('passport-discord').Strategy;
 const axios = require('axios');
@@ -52,16 +52,27 @@ app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'change-me',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production' || !!process.env.VERCEL,
-        sameSite: 'lax',
-        maxAge: 24 * 60 * 60 * 1000
-    }
+// cookie-session: funciona en Vercel (serverless). express-session en memoria se pierde y el login se queda cargando.
+const isProd = process.env.NODE_ENV === 'production' || !!process.env.VERCEL;
+app.use(cookieSession({
+    name: 'ff_session',
+    keys: [process.env.SESSION_SECRET || 'change-me-flow-factory', 'ff-backup-key'],
+    maxAge: 24 * 60 * 60 * 1000,
+    secure: isProd,
+    sameSite: 'lax',
+    httpOnly: true
 }));
+
+// Compat passport + cookie-session (regenerate/save stubs)
+app.use((req, res, next) => {
+    if (req.session && !req.session.regenerate) {
+        req.session.regenerate = (cb) => cb && cb();
+    }
+    if (req.session && !req.session.save) {
+        req.session.save = (cb) => cb && cb();
+    }
+    next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -76,24 +87,31 @@ const whitelistLimiter = rateLimit({
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
 
+const oauthCallback =
+    process.env.DISCORD_CALLBACK_URL ||
+    process.env.DISCORD_REDIRECT_URI ||
+    (process.env.VERCEL ? 'https://flowfactoryy.vercel.app/auth/discord/callback' : 'http://localhost:3000/auth/discord/callback');
+
+if (!process.env.DISCORD_CLIENT_ID || !process.env.DISCORD_CLIENT_SECRET) {
+    console.warn('⚠️ Falta DISCORD_CLIENT_ID o DISCORD_CLIENT_SECRET — el login Discord no funcionará.');
+}
+
 passport.use(new DiscordStrategy({
     clientID: process.env.DISCORD_CLIENT_ID,
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
-    callbackURL: process.env.DISCORD_CALLBACK_URL || process.env.DISCORD_REDIRECT_URI || 'http://localhost:3000/auth/discord/callback',
+    callbackURL: oauthCallback,
     scope: ['identify', 'guilds', 'email']
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         const guildMember = profile.guilds?.find(g => g.id === process.env.DISCORD_GUILD_ID);
+        // No guardar accessToken en sesión (cookie-session tiene límite de tamaño)
         return done(null, {
             id: profile.id,
             username: profile.username,
             discriminator: profile.discriminator,
             avatar: profile.avatar,
-            email: profile.email,
-            accessToken,
-            inGuild: !!guildMember,
-            guildMember,
-            createdAt: profile.fetchedAt || null
+            email: profile.email || null,
+            inGuild: !!guildMember
         });
     } catch (err) {
         return done(err, null);
@@ -206,14 +224,48 @@ function reqCountryFallback() {
 app.locals.brand = BRAND;
 app.locals.logo = LOGO;
 
-app.get('/login', passport.authenticate('discord'));
-app.get('/auth/discord', passport.authenticate('discord'));
-app.get('/auth/discord/callback',
-    passport.authenticate('discord', { failureRedirect: '/' }),
-    (req, res) => res.redirect('/dashboard')
-);
+app.get('/login', (req, res, next) => {
+    if (!process.env.DISCORD_CLIENT_SECRET) {
+        return res.status(500).render('error', {
+            message: 'Falta DISCORD_CLIENT_SECRET en Vercel. Agrégalo en Environment Variables y redespliega.',
+            invite: process.env.DISCORD_INVITE || '#'
+        });
+    }
+    passport.authenticate('discord')(req, res, next);
+});
+app.get('/auth/discord', (req, res) => res.redirect('/login'));
+app.get('/auth/discord/callback', (req, res, next) => {
+    passport.authenticate('discord', (err, user) => {
+        if (err) {
+            console.error('OAuth error:', err);
+            return res.status(500).render('error', {
+                message: 'Error al iniciar sesión con Discord. Revisa Client Secret y el Redirect URI.',
+                invite: process.env.DISCORD_INVITE || '#'
+            });
+        }
+        if (!user) {
+            return res.render('error', {
+                message: 'No se pudo autenticar con Discord. Intenta de nuevo.',
+                invite: process.env.DISCORD_INVITE || '#'
+            });
+        }
+        req.logIn(user, (loginErr) => {
+            if (loginErr) {
+                console.error('Login session error:', loginErr);
+                return res.status(500).render('error', {
+                    message: 'Sesión no guardada. Intenta de nuevo.',
+                    invite: process.env.DISCORD_INVITE || '#'
+                });
+            }
+            return res.redirect('/dashboard');
+        });
+    })(req, res, next);
+});
 app.get('/logout', (req, res) => {
-    req.logout(() => res.redirect('/'));
+    req.logout(() => {
+        req.session = null;
+        res.redirect('/');
+    });
 });
 
 app.get('/api/public-config', (req, res) => {
