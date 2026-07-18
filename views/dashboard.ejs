@@ -3,236 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Flow Factory RP</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; overflow-x: hidden; }
-        .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .gradient-text { background: linear-gradient(135deg, #dc2626 0%, #2563eb 50%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); } 50% { box-shadow: 0 0 40px rgba(37, 99, 235, 0.6); } }
-        .animate-pulse-glow { animation: pulse-glow 2s infinite; }
-        .sidebar-item { transition: all 0.3s ease; border-left: 3px solid transparent; }
-        .sidebar-item:hover, .sidebar-item.active { background: rgba(220, 38, 38, 0.1); border-left-color: #dc2626; }
-    </style>
+    <title>Panel — Flow Factory RP</title>
+    <link rel="icon" href="/img/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/panel.css">
 </head>
-<body class="bg-black min-h-screen">
+<body>
+<% 
+  const avatar = user.avatar
+    ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
+    : 'https://cdn.discordapp.com/embed/avatars/0.png';
+  const isVerified = !!(verified && verified.verified);
+%>
+<div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="side-brand">
+            <img src="/img/logo.png" alt="Flow Factory">
+            <div>
+                <strong>Flow Factory</strong>
+                <span>Panel v1.0</span>
+            </div>
+        </div>
 
-    <!-- App Container -->
-    <div class="flex h-screen overflow-hidden">
-        
-        <!-- Sidebar -->
-        <aside id="sidebar" class="sidebar fixed lg:relative z-40 w-72 h-full bg-[#0a0a0a] border-r border-white/10 flex flex-col transition-transform duration-300">
-            <!-- Logo -->
-            <div class="p-6 border-b border-white/10">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-blue-600 rounded-xl flex items-center justify-center">
-                        <span class="font-orbitron font-bold text-white text-xs">FFRP</span>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-white">Flow Factory<span class="text-blue-400">RP</span></h1>
-                        <p class="text-xs text-gray-500">Panel de Usuario</p>
-                    </div>
+        <div class="side-user">
+            <img src="<%= avatar %>" alt="" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+            <div>
+                <p class="name"><%= user.username %></p>
+                <p class="meta"><%= isAdmin ? 'Admin' : 'Usuario' %> · Discord</p>
+            </div>
+        </div>
+
+        <nav class="side-nav">
+            <a class="nav-item active" href="/dashboard">Dashboard</a>
+            <a class="nav-item" href="/dashboard#perfil">Mi Perfil</a>
+            <a class="nav-item" href="/whitelist">
+                Aplicaciones
+                <span class="badge-count"><%= applications.length %></span>
+            </a>
+            <a class="nav-item" href="/rules">Normativas</a>
+            <% if (isAdmin) { %>
+            <a class="nav-item" href="/admin">Admin</a>
+            <% } %>
+        </nav>
+
+        <div class="side-foot">
+            <a href="/rules">Ayuda</a>
+            <a href="/logout" class="danger">Cerrar Sesión</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <header class="topbar">
+            <div class="top-left">
+                <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Menú">☰</button>
+                <div>
+                    <h1>Dashboard</h1>
+                    <span class="online"><i></i> Online</span>
                 </div>
             </div>
-            
-            <!-- Navigation -->
-            <nav class="flex-1 overflow-y-auto py-4">
-                <div class="px-4 mb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Menú</div>
-                
-                <a href="/dashboard" class="sidebar-item active w-full flex items-center gap-3 px-6 py-3 text-left">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    <span>Dashboard</span>
-                </a>
-                
-                <a href="/whitelist" class="sidebar-item w-full flex items-center gap-3 px-6 py-3 text-left text-gray-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span>Whitelist</span>
-                    <% if (!hasWhitelist) { %>
-                        <span class="ml-auto w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                    <% } else { %>
-                        <span class="ml-auto text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">OK</span>
-                    <% } %>
-                </a>
-                
-                <a href="/rules" class="sidebar-item w-full flex items-center gap-3 px-6 py-3 text-left text-gray-400 hover:text-white">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    <span>Normativas</span>
-                </a>
-            </nav>
-            
-            <!-- User Profile -->
-            <div class="p-4 border-t border-white/10">
-                <div class="flex items-center gap-3 mb-4">
-                    <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" 
-                         alt="Avatar" 
-                         class="w-10 h-10 rounded-full border-2 border-red-500"
-                         onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
-                    <div>
-                        <p class="font-medium text-white text-sm"><%= user.username %></p>
-                        <p class="text-xs text-gray-400"><%= user.inGuild ? 'Miembro del servidor' : 'No en servidor' %></p>
-                    </div>
-                </div>
-                <a href="/logout" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 text-left text-red-400 hover:text-red-300 rounded-lg">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    <span>Cerrar Sesión</span>
-                </a>
+            <div class="top-right">
+                <a class="btn-primary" href="/whitelist">+ Nueva Aplicación</a>
             </div>
-        </aside>
+        </header>
 
-        <!-- Main Content -->
-        <main class="flex-1 flex flex-col h-full overflow-hidden relative">
-            
-            <!-- Header -->
-            <header class="h-16 glass border-b border-white/10 flex items-center justify-between px-6 z-20">
-                <div class="flex items-center gap-4">
-                    <button onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    </button>
-                    <div class="flex items-center gap-2 text-sm text-gray-400">
-                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                        Sistema Operativo
-                    </div>
+        <div class="content">
+            <section class="welcome card">
+                <div>
+                    <h2>Bienvenido, <span><%= user.username %></span></h2>
+                    <p>@<%= user.username %> · <%= user.inGuild ? 'Miembro del servidor' : 'Únete al Discord' %></p>
                 </div>
-                
-                <div class="flex items-center gap-4">
-                    <% if (!hasWhitelist) { %>
-                        <a href="/whitelist" class="bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-500 hover:to-blue-500 px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition animate-pulse-glow">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                            Hacer Whitelist
-                        </a>
-                    <% } %>
-                </div>
-            </header>
+                <img class="welcome-avatar" src="<%= avatar %>" alt="">
+            </section>
 
-            <!-- Content Area -->
-            <div class="flex-1 overflow-y-auto p-6">
-                <div class="max-w-6xl mx-auto">
-                    
-                    <!-- Welcome -->
-                    <div class="mb-8">
-                        <div class="inline-flex items-center gap-2 px-4 py-2 glass rounded-full text-sm mb-4">
-                            <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
-                            <span>Panel de Control</span>
-                        </div>
-                        <h1 class="text-4xl font-bold mb-2">Bienvenido, <span class="gradient-text"><%= user.username %></span></h1>
-                        <p class="text-gray-400">Gestiona tu whitelist y accede a las normativas del servidor</p>
-                    </div>
+            <div class="grid-2">
+                <section class="card">
+                    <h3>Progreso de Whitelist</h3>
 
-                    <!-- Stats Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                        <div class="glass p-6 rounded-2xl border border-white/10">
-                            <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center mb-4">
-                                <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <h3 class="text-lg font-semibold text-gray-400">Whitelist</h3>
-                            <p class="text-2xl font-bold text-white mt-1">
-                                <% if (hasWhitelist) { %>
-                                    <span class="text-green-400">Aprobada</span>
-                                <% } else { %>
-                                    <span class="text-yellow-400">Pendiente</span>
-                                <% } %>
-                            </p>
+                    <div class="phase <%= phase1Done ? (hasWhitelist || (lastApp && lastApp.status === 'pending') ? 'done' : 'progress') : 'progress' %>">
+                        <div class="phase-head">
+                            <strong>Fase 1 — Cuestionario</strong>
+                            <% if (!phase1Done) { %>
+                                <span class="tag yellow">En progreso</span>
+                            <% } else if (lastApp && lastApp.status === 'denied') { %>
+                                <span class="tag red">Rechazada</span>
+                            <% } else if (lastApp && lastApp.status === 'pending') { %>
+                                <span class="tag yellow">En revisión</span>
+                            <% } else { %>
+                                <span class="tag green">Completada</span>
+                            <% } %>
                         </div>
-                        
-                        <div class="glass p-6 rounded-2xl border border-white/10">
-                            <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
-                                <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            </div>
-                            <h3 class="text-3xl font-bold text-white"><%= applications.length %></h3>
-                            <p class="text-gray-400">Aplicaciones</p>
-                        </div>
-                        
-                        <div class="glass p-6 rounded-2xl border border-white/10">
-                            <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
-                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <h3 class="text-3xl font-bold text-white">En servidor</h3>
-                            <p class="text-gray-400">Estado actual</p>
-                        </div>
-                        
-                        <div class="glass p-6 rounded-2xl border border-white/10">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                </div>
-                                <span class="flex items-center gap-1 text-xs text-green-400">
-                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                                    Activo
-                                </span>
-                            </div>
-                            <h3 class="text-lg font-semibold text-white">Discord</h3>
-                            <p class="text-gray-400">Conectado</p>
-                        </div>
-                    </div>
-
-                    <!-- Recent Applications -->
-                    <div class="glass rounded-2xl p-6 border border-white/10">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-lg font-semibold flex items-center gap-2">
-                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                Aplicaciones Recientes
-                            </h3>
-                            <a href="/whitelist" class="text-sm text-blue-400 hover:text-blue-300">
-                                Nueva aplicación →
-                            </a>
-                        </div>
-                        
-                        <% if (applications.length === 0) { %>
-                            <div class="text-center py-12">
-                                <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <svg class="w-10 h-10 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                </div>
-                                <h4 class="text-lg font-semibold text-gray-400 mb-2">No hay aplicaciones aún</h4>
-                                <p class="text-gray-500 text-sm mb-6">Comienza creando tu primera aplicación</p>
-                                <a href="/whitelist" class="bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-500 hover:to-blue-500 px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2 transition animate-pulse-glow">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                    Crear aplicación
-                                </a>
-                            </div>
-                        <% } else { %>
-                            <div class="space-y-4">
-                                <% applications.forEach(app => { %>
-                                    <div class="glass p-4 rounded-xl border border-white/10 flex items-center justify-between">
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center">
-                                                <span class="font-orbitron font-bold text-blue-400 text-xs">#<%= app.id %></span>
-                                            </div>
-                                            <div>
-                                                <h4 class="font-semibold">Whitelist Fase 1</h4>
-                                                <p class="text-sm text-gray-400">
-                                                    <%= new Date(app.created_at).toLocaleDateString('es-ES') %> • 
-                                                    <%= Math.floor(app.time_taken / 60) %>m <%= app.time_taken % 60 %>s
-                                                </p>
-                                                <p class="text-xs text-gray-500">Score: <%= app.score %>%</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-3">
-                                            <% if (app.status === 'pending') { %>
-                                                <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-sm">⏳ Pendiente</span>
-                                            <% } else if (app.status === 'approved') { %>
-                                                <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">✅ Aprobada</span>
-                                            <% } else { %>
-                                                <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-sm">❌ Denegada</span>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                <% }); %>
-                            </div>
+                        <p>Preguntas sobre las reglas del servidor (IC, OOC, RDM, VDM, etc.).</p>
+                        <% if (!hasWhitelist) { %>
+                            <a class="btn-primary sm" href="/whitelist"><%= phase1Done ? 'Ver estado' : 'Continuar' %></a>
                         <% } %>
                     </div>
-                </div>
+
+                    <div class="phase <%= phase2Done ? 'done' : 'locked' %>">
+                        <div class="phase-head">
+                            <strong>Fase 2 — Entrevista por voz</strong>
+                            <% if (phase2Done) { %>
+                                <span class="tag green">Aprobada</span>
+                            <% } else if (lastApp && lastApp.status === 'pending') { %>
+                                <span class="tag yellow">Esperando llamada</span>
+                            <% } else { %>
+                                <span class="tag gray">Bloqueada</span>
+                            <% } %>
+                        </div>
+                        <p><%= phase2Done ? 'Whitelist aprobada. ¡Bienvenido a la isla!' : 'Se desbloquea al completar la Fase 1 y pasar revisión.' %></p>
+                    </div>
+                </section>
+
+                <aside class="stack">
+                    <section class="card" id="perfil">
+                        <h3>Completado de Perfil</h3>
+                        <div class="progress">
+                            <div class="progress-bar" style="width:<%= profilePct %>%"></div>
+                        </div>
+                        <p class="pct"><%= profilePct %>%</p>
+                        <ul class="checks">
+                            <li class="ok">Discord conectado</li>
+                            <li class="ok">Username configurado</li>
+                            <li class="<%= isVerified ? 'ok' : '' %>">Verificación Discord</li>
+                            <li class="<%= phase1Done ? 'ok' : '' %>">Whitelist Fase 1</li>
+                            <li class="<%= phase2Done ? 'ok' : '' %>">Whitelist Fase 2</li>
+                        </ul>
+                    </section>
+
+                    <section class="card">
+                        <h3>Mis Solicitudes</h3>
+                        <div class="stats-4">
+                            <div><strong><%= applications.length %></strong><span>Total</span></div>
+                            <div><strong><%= pendingCount %></strong><span>Pendientes</span></div>
+                            <div><strong><%= approvedCount %></strong><span>Aprobadas</span></div>
+                            <div><strong><%= deniedCount %></strong><span>Rechazadas</span></div>
+                        </div>
+                    </section>
+                </aside>
             </div>
-        </main>
-    </div>
 
-    <script>
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
-        }
-    </script>
+            <section class="card">
+                <div class="card-head">
+                    <h3>Aplicaciones Recientes</h3>
+                    <a href="/whitelist">+ Crear aplicación</a>
+                </div>
 
+                <% if (!applications.length) { %>
+                    <div class="empty">
+                        <p>No tienes aplicaciones aún</p>
+                        <a class="btn-primary" href="/whitelist">+ Crear aplicación</a>
+                    </div>
+                <% } else { %>
+                    <div class="apps">
+                        <% applications.forEach(app => { %>
+                            <div class="app-row">
+                                <div>
+                                    <strong>Whitelist #<%= app.id %></strong>
+                                    <span><%= new Date(app.created_at).toLocaleString('es-PR') %> · Score <%= app.score %>%</span>
+                                </div>
+                                <% if (app.status === 'pending') { %>
+                                    <em class="tag yellow">Pendiente</em>
+                                <% } else if (app.status === 'approved') { %>
+                                    <em class="tag green">Aprobada</em>
+                                <% } else { %>
+                                    <em class="tag red">Rechazada</em>
+                                <% } %>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </section>
+
+            <section class="card">
+                <h3>Accesos rápidos</h3>
+                <div class="forms">
+                    <a href="/whitelist">Hacer Whitelist</a>
+                    <a href="/rules">Leer Normativas</a>
+                    <a href="<%= typeof invite !== 'undefined' ? invite : '#' %>" target="_blank" rel="noopener">Abrir Discord</a>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
 </body>
 </html>

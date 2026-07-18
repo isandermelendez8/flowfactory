@@ -210,7 +210,7 @@ app.get('/login', passport.authenticate('discord'));
 app.get('/auth/discord', passport.authenticate('discord'));
 app.get('/auth/discord/callback',
     passport.authenticate('discord', { failureRedirect: '/' }),
-    (req, res) => res.redirect('/whitelist')
+    (req, res) => res.redirect('/dashboard')
 );
 app.get('/logout', (req, res) => {
     req.logout(() => res.redirect('/'));
@@ -238,14 +238,35 @@ app.get('/dashboard', requireAuth, requireGuild, async (req, res) => {
         verified = data;
     } catch (_) {}
 
+    const wlApproved = await hasWhitelist(req.user.id);
+    const lastApp = applications[0] || null;
+    const phase1Done = !!(lastApp && (lastApp.status === 'pending' || lastApp.status === 'approved' || lastApp.status === 'denied'));
+    const phase2Done = wlApproved;
+    const pendingCount = applications.filter(a => a.status === 'pending').length;
+    const approvedCount = applications.filter(a => a.status === 'approved').length;
+    const deniedCount = applications.filter(a => a.status === 'denied').length;
+    const profilePct = 25
+        + (user.user ? 25 : 0)
+        + (verified?.verified ? 25 : 0)
+        + (phase1Done ? 15 : 0)
+        + (phase2Done ? 10 : 0);
+
     res.render('dashboard', {
         user: req.user,
         applications,
-        hasWhitelist: await hasWhitelist(req.user.id),
+        hasWhitelist: wlApproved,
         isAdmin: admin,
         verified,
         brand: BRAND,
-        logo: LOGO
+        logo: LOGO,
+        phase1Done,
+        phase2Done,
+        lastApp,
+        pendingCount,
+        approvedCount,
+        deniedCount,
+        profilePct: Math.min(100, profilePct),
+        invite: process.env.DISCORD_INVITE || '#'
     });
 });
 
