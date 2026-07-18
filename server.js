@@ -100,7 +100,8 @@ passport.use(new DiscordStrategy({
     clientID: process.env.DISCORD_CLIENT_ID,
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
     callbackURL: oauthCallback,
-    scope: ['identify', 'guilds', 'email']
+    // Sin 'email' — en móvil Discord a veces se queda cargando con más scopes
+    scope: ['identify', 'guilds']
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         const guildMember = profile.guilds?.find(g => g.id === process.env.DISCORD_GUILD_ID);
@@ -110,7 +111,7 @@ passport.use(new DiscordStrategy({
             username: profile.username,
             discriminator: profile.discriminator,
             avatar: profile.avatar,
-            email: profile.email || null,
+            email: null,
             inGuild: !!guildMember
         });
     } catch (err) {
