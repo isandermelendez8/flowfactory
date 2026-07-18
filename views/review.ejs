@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisión — Flow Factory RP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="min-h-screen bg-black text-white p-6" style="font-family:Manrope,sans-serif">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="font-orbitron text-3xl mb-2">Revisar respuestas</h1>
+        <p class="text-gray-400 mb-6"><%= answered %>/<%= total %> respondidas</p>
+        <div class="space-y-3 mb-8">
+            <% questions.forEach((q, i) => { %>
+            <div class="glass rounded-xl p-4 border border-white/10">
+                <p class="text-sm text-gray-400">#<%= i + 1 %></p>
+                <p class="font-semibold"><%= q.question %></p>
+                <p class="text-blue-300 mt-1"><%= q.userAnswer || 'Sin responder' %></p>
+            </div>
+            <% }) %>
+        </div>
+        <button id="submitBtn" class="w-full bg-gradient-to-r from-red-600 to-blue-600 py-3 rounded-xl font-semibold">Enviar whitelist</button>
+    </div>
+    <script>
+        document.getElementById('submitBtn').onclick = async () => {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+            const res = await fetch('/whitelist/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+            const data = await res.json();
+            if (data.redirect) location.href = data.redirect;
+            else { alert(data.error || 'Error'); btn.disabled = false; }
+        };
+    </script>
+</body>
+</html>

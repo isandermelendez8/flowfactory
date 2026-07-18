@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooldown — Flow Factory RP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="min-h-screen bg-black text-white flex items-center justify-center p-6" style="font-family:Manrope,sans-serif">
+    <div class="glass rounded-2xl p-8 max-w-md w-full text-center border border-red-500/30">
+        <img src="<%= typeof logo !== 'undefined' ? logo : 'https://cdn.discordapp.com/attachments/1512237319346720829/1527910879247728792/F9D0824B-0262-4885-A728-F3DF5003AC7E.png' %>" alt="Logo" class="w-20 h-20 mx-auto mb-4 object-contain">
+        <h1 class="font-orbitron text-2xl mb-2">Cooldown activo</h1>
+        <p class="text-gray-400 mb-6">Debes esperar antes de volver a intentar la whitelist.</p>
+        <a href="/dashboard" class="inline-block bg-gradient-to-r from-red-600 to-blue-600 px-6 py-3 rounded-xl font-semibold">Volver al panel</a>
+    </div>
+</body>
+</html>

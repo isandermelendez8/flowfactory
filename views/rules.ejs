@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normativas - Flow Factory RP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .gradient-text { background: linear-gradient(135deg, #dc2626 0%, #2563eb 50%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-black min-h-screen">
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 glass border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-red-600 to-blue-600 rounded-xl flex items-center justify-center">
+                    <span class="font-orbitron font-bold text-white text-xs">FFRP</span>
+                </div>
+                <h1 class="font-bold text-white">Flow Factory<span class="text-blue-400">RP</span></h1>
+            </a>
+            
+            <div class="flex items-center gap-4">
+                <% if (user) { %>
+                    <a href="/dashboard" class="text-gray-400 hover:text-white">Dashboard</a>
+                <% } else { %>
+                    <a href="/login" class="bg-gradient-to-r from-red-600 to-blue-600 px-4 py-2 rounded-lg font-semibold">Iniciar Sesión</a>
+                <% } %>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="pt-24 pb-12 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4 font-orbitron">Normativas <span class="gradient-text">Flow Factory RP</span></h1>
+                <p class="text-gray-400">Lee cuidadosamente antes de realizar la whitelist</p>
+            </div>
+
+            <!-- Conceptos Básicos -->
+            <div class="glass rounded-2xl p-6 border border-white/10 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-red-400">📚 Conceptos Básicos</h2>
+                
+                <div class="space-y-4">
+                    <div class="border-l-4 border-red-500 pl-4">
+                        <h3 class="font-semibold text-lg">IC & OOC</h3>
+                        <p class="text-gray-400 text-sm mt-1">
+                            <strong>IC (In Character):</strong> Todo lo que hace/dice tu personaje dentro del rol.<br>
+                            <strong>OOC (Out Of Character):</strong> Todo lo fuera del personaje (vida real / Discord).
+                        </p>
+                    </div>
+                    
+                    <div class="border-l-4 border-red-500 pl-4">
+                        <h3 class="font-semibold text-lg text-red-400">Meta Gaming (MG) - PROHIBIDO</h3>
+                        <p class="text-gray-400 text-sm mt-1">
+                            Usar información obtenida fuera del juego (Discord, streams, WhatsApp) para beneficiarse dentro del roleplay. 
+                            <strong>Sanción:</strong> 400 comunitarias
+                        </p>
+                    </div>
+                    
+                    <div class="border-l-4 border-red-500 pl-4">
+                        <h3 class="font-semibold text-lg text-red-400">Power Gaming (PG) - PROHIBIDO</h3>
+                        <p class="text-gray-400 text-sm mt-1">
+                            Realizar acciones irreales o forzadas, o no dar oportunidad de reacción a la contraparte. 
+                            Ej: conducir a 100 km/h con ruedas pinchadas. 
+                            <strong>Sanción:</strong> 350-400 comunitarias
+                        </p>
+                    </div>
+                    
+                    <div class="border-l-4 border-orange-500 pl-4">
+                        <h3 class="font-semibold text-lg text-orange-400">Fear Roleplay (FRP)</h3>
+                        <p class="text-gray-400 text-sm mt-1">
+                            Debes valorar tu vida en todo momento. Si te apuntan, levanta las manos y coopera. 
+                            <strong>Sanción:</strong> 500 comunitarias
+                        </p>
+                    </div>
+                    
+                    <div class="border-l-4 border-red-500 pl-4">
+                        <h3 class="font-semibold text-lg text-red-400">Deathmatch (DM) - PROHIBIDO</h3>
+                        <p class="text-gray-400 text-sm mt-1">
+                            Atacar o matar sin razón de rol válida. Siempre debe haber interacción previa. 
+                            <strong>Sanción:</strong> 300-350 comunitarias
+                        </p>
+                    </div>
+                    
+                    <div class="border-l-4 border-red-500 pl-4">
+                        <h3 class="font-semibold text-lg text-red-400">Revenge Kill (RK) - PROHIBIDO</h3>
+                        <p class="text-gray-400 text-sm mt-1">
+                            Volver a matar por venganza tras haber muerto. Después de PK/CK olvidas el conflicto. 
+                            <strong>Sanción:</strong> 150-350 comunitarias
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zonas Seguras -->
+            <div class="glass rounded-2xl p-6 border border-white/10 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-green-400">🏥 Zonas Seguras</h2>
+                <p class="text-gray-400 mb-4">
+                    Hospital, comisaría, talleres, negocios de comida, tiendas de ropa. 
+                    <strong>Neutralidad absoluta:</strong> Prohibida cualquier violencia o rol agresivo.
+                </p>
+                <p class="text-sm text-red-400">
+                    <strong>Sanción por violar zona segura:</strong> 150-850 comunitarias según infracción
+                </p>
+            </div>
+
+            <!-- Sistema de Muerte -->
+            <div class="glass rounded-2xl p-6 border border-white/10 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-red-400">💀 Sistema de Muerte</h2>
+                
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="glass p-4 rounded-xl border border-blue-500/30">
+                        <h3 class="font-semibold text-blue-400 mb-2">Fase 1: Herido</h3>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li>• Puedes arrastrarte</li>
+                            <li>• Puedes hablar</li>
+                            <li>• Puedes usar radio</li>
+                            <li>• $300 para ir con María</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass p-4 rounded-xl border border-orange-500/30">
+                        <h3 class="font-semibold text-orange-400 mb-2">Fase 2: Desangrándose</h3>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li>• Puedes hablar</li>
+                            <li>• NO radio</li>
+                            <li>• NO llamadas</li>
+                            <li>• PK si te vas</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass p-4 rounded-xl border border-red-500/30">
+                        <h3 class="font-semibold text-red-400 mb-2">Fase 3: Inconsciente</h3>
+                        <ul class="text-sm text-gray-400 space-y-1">
+                            <li>• Sin comunicación</li>
+                            <li>• 100% PK si EMS llega</li>
+                            <li>• No recordar nada</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Normas Policía -->
+            <div class="glass rounded-2xl p-6 border border-white/10 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-blue-400">👮 Normas Policiales</h2>
+                <ul class="space-y-2 text-gray-400">
+                    <li>• <strong>Corrupción policial:</strong> Totalmente prohibida sin aprobación de administración</li>
+                    <li>• <strong>Vehículos:</strong> Prohibido usar vehículos personales en servicio</li>
+                    <li>• <strong>Negociaciones:</strong> Una vez aceptados términos, deben respetarse</li>
+                    <li>• <strong>Grabación:</strong> Obligatorio grabar al iniciar servicio</li>
+                </ul>
+            </div>
+
+            <!-- Normas EMS -->
+            <div class="glass rounded-2xl p-6 border border-white/10 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-green-400">🚑 Normas EMS</h2>
+                <ul class="space-y-2 text-gray-400">
+                    <li>• <strong>Rol profesional:</strong> Serio, realista, sin actuar de forma troll</li>
+                    <li>• <strong>Neutralidad:</strong> Rol completamente neutral</li>
+                    <li>• <strong>Venta de items:</strong> PROHIBIDA la venta de banditas y medkits</li>
+                    <li>• <strong>Zonas activas:</strong> Esperar autorización policial para entrar</li>
+                </ul>
+            </div>
+
+            <!-- Gangas -->
+            <div class="glass rounded-2xl p-6 border border-white/10 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-red-400">🏴‍☠️ Gangas</h2>
+                <ul class="space-y-2 text-gray-400">
+                    <li>• <strong>Aprobación:</strong> Toda ganga debe ser aprobada por administración</li>
+                    <li>• <strong>Ataques:</strong> Debe existir motivo IC previo</li>
+                    <li>• <strong>Atracos:</strong> Solo con policías en servicio</li>
+                    <li>• <strong>Responsable:</strong> El líder es responsable de toda la organización</li>
+                </ul>
+            </div>
+
+            <!-- Sanciones Graves -->
+            <div class="glass rounded-2xl p-6 border border-red-500/30 bg-red-500/5 mb-6">
+                <h2 class="text-2xl font-bold mb-4 text-red-400">⚠️ Sanciones Graves</h2>
+                <ul class="space-y-2 text-gray-400">
+                    <li>• <strong class="text-red-400">Abuso de bugs/exploits:</strong> BAN PERMANENTE</li>
+                    <li>• <strong class="text-red-400">Multicuentas:</strong> Expulsión permanente</li>
+                    <li>• <strong class="text-red-400">F8/ALT+F4 en rol activo:</strong> 700 com. o 24h BAN</li>
+                    <li>• <strong class="text-red-400">Evasión de rol (+10 min AFK):</strong> Sanción según gravedad</li>
+                    <li>• <strong class="text-red-400">Stream Sniping:</strong> 24h de BAN</li>
+                </ul>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center mt-12">
+                <a href="/whitelist" class="bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-500 hover:to-blue-500 px-8 py-4 rounded-xl font-bold text-lg inline-flex items-center gap-2 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Ir a Whitelist
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

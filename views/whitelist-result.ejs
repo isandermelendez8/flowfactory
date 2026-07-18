@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado - Flow Factory RP Whitelist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .gradient-text { background: linear-gradient(135deg, #dc2626 0%, #2563eb 50%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); } 50% { box-shadow: 0 0 40px rgba(37, 99, 235, 0.6); } }
+        .animate-pulse-glow { animation: pulse-glow 2s infinite; }
+    </style>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-2xl w-full text-center">
+        
+        <% if (status === 'approved') { %>
+            <!-- Approved -->
+            <div class="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow">
+                <svg class="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h2 class="text-4xl font-bold mb-4 font-orbitron">¡Whitelist <span class="text-green-400">Aprobada!</span></h2>
+            <p class="text-gray-400 mb-8 text-lg"><%= message %></p>
+            
+            <div class="glass rounded-2xl p-6 border border-green-500/30 mb-8">
+                <h3 class="font-semibold text-lg mb-4 text-green-400">🎉 Próximos pasos:</h3>
+                <ul class="text-left text-gray-300 space-y-3">
+                    <li class="flex items-start gap-2">
+                        <span class="text-green-400">1.</span>
+                        <span>Ya puedes ingresar al servidor de FiveM</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-green-400">2.</span>
+                        <span>Lee atentamente las normativas del servidor</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-green-400">3.</span>
+                        <span>Crea tu personaje siguiendo las reglas</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-green-400">4.</span>
+                        <span>¡Disfruta de Flow Factory RP!</span>
+                    </li>
+                </ul>
+            </div>
+
+        <% } else if (status === 'denied') { %>
+            <!-- Denied -->
+            <div class="w-24 h-24 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </div>
+            <h2 class="text-4xl font-bold mb-4 font-orbitron">Whitelist <span class="text-red-400">Denegada</span></h2>
+            <p class="text-gray-400 mb-8 text-lg"><%= message %></p>
+            
+            <div class="glass rounded-2xl p-6 border border-red-500/30 mb-8">
+                <h3 class="font-semibold text-lg mb-4 text-red-400">📚 Recomendaciones:</h3>
+                <ul class="text-left text-gray-300 space-y-3">
+                    <li class="flex items-start gap-2">
+                        <span class="text-red-400">•</span>
+                        <span>Lee cuidadosamente todas las normativas</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-red-400">•</span>
+                        <span>Presta atención a los conceptos básicos (MG, PG, DM, etc.)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-red-400">•</span>
+                        <span>Espera 24 horas antes de intentar nuevamente</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-red-400">•</span>
+                        <span>Solo tienes UNA oportunidad cada 24 horas</span>
+                    </li>
+                </ul>
+            </div>
+
+        <% } else { %>
+            <!-- Pending -->
+            <div class="w-24 h-24 bg-yellow-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <h2 class="text-4xl font-bold mb-4 font-orbitron">Whitelist <span class="text-yellow-400">Pendiente</span></h2>
+            <p class="text-gray-400 mb-8 text-lg"><%= message %></p>
+            
+            <div class="glass rounded-2xl p-6 border border-yellow-500/30 mb-8">
+                <h3 class="font-semibold text-lg mb-4 text-yellow-400">⏳ Qué sigue:</h3>
+                <ul class="text-left text-gray-300 space-y-3">
+                    <li class="flex items-start gap-2">
+                        <span class="text-yellow-400">1.</span>
+                        <span>Un miembro del staff revisará tu formulario manualmente</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-yellow-400">2.</span>
+                        <span>Recibirás una notificación en Discord</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-yellow-400">3.</span>
+                        <span>Si es aprobada, podrás ingresar al servidor</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-yellow-400">4.</span>
+                        <span>El proceso puede tomar hasta 24-48 horas</span>
+                    </li>
+                </ul>
+            </div>
+        <% } %>
+
+        <a href="/dashboard" class="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-500 hover:to-blue-500 px-8 py-4 rounded-xl font-bold text-lg transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            Ir al Dashboard
+        </a>
+    </div>
+
+</body>
+</html>

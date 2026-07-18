@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación - Flow Factory RP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .gradient-text { background: linear-gradient(135deg, #dc2626 0%, #2563eb 50%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    </style>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-lg w-full">
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-gradient-to-br from-red-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <h2 class="text-3xl font-bold mb-2 font-orbitron">Verificación de <span class="gradient-text">Seguridad</span></h2>
+            <p class="text-gray-400">Completa el captcha para verificar tu cuenta</p>
+        </div>
+
+        <div class="glass rounded-2xl p-8 border border-white/10">
+            <!-- Info -->
+            <div class="mb-6 space-y-3">
+                <div class="flex items-center gap-3 text-sm text-gray-400">
+                    <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span>mínimo 7 días + anti-alt por IP</span>
+                </div>
+                <div class="flex items-center gap-3 text-sm text-gray-400">
+                    <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span>Verificación por PC obligatoria</span>
+                </div>
+                <div class="flex items-center gap-3 text-sm text-gray-400">
+                    <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span>Sin VPN permitida</span>
+                </div>
+            </div>
+
+            <!-- Captcha -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-400 mb-2">Ingresa el código de seguridad:</label>
+                <div class="flex justify-center mb-4">
+                    <div class="bg-white rounded-lg p-2">
+                        <img src="data:image/svg+xml;base64,<%= Buffer.from(captcha).toString('base64') %>" alt="CAPTCHA" class="h-16">
+                    </div>
+                </div>
+                <input type="text" id="captchaInput" 
+                       class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-center tracking-widest font-mono text-lg focus:outline-none focus:border-red-500 transition"
+                       placeholder="000000"
+                       maxlength="6">
+            </div>
+
+            <!-- Warning -->
+            <div class="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl mb-6">
+                <p class="text-sm text-yellow-200 text-center">
+                    <strong>⚠️ Al verificarte aceptas que registramos:</strong><br>
+                    IP, país, fecha de verificación, datos de tu cuenta con fines de seguridad.
+                </p>
+            </div>
+
+            <!-- Submit -->
+            <button onclick="verify()" id="verifyBtn" class="w-full bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-500 hover:to-blue-500 py-4 rounded-xl font-bold text-lg transition">
+                Verificar Cuenta
+            </button>
+
+            <!-- Error -->
+            <div id="errorMsg" class="hidden mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
+                <p class="text-sm text-red-400 text-center"></p>
+            </div>
+        </div>
+
+        <p class="text-center text-gray-500 text-sm mt-6">
+            ¿Problemas? Contacta a un administrador en Discord
+        </p>
+    </div>
+
+    <script>
+        async function verify() {
+            const captcha = document.getElementById('captchaInput').value;
+            const btn = document.getElementById('verifyBtn');
+            const errorDiv = document.getElementById('errorMsg');
+            const errorText = errorDiv.querySelector('p');
+
+            if (!captcha || captcha.length !== 6) {
+                errorDiv.classList.remove('hidden');
+                errorText.textContent = 'Ingresa el código de 6 caracteres';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Verificando...';
+            errorDiv.classList.add('hidden');
+
+            try {
+                const response = await fetch('/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        captcha: captcha,
+                        token: '<%= token %>'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    btn.textContent = '✓ Verificado!';
+                    btn.classList.remove('from-red-600', 'to-blue-600');
+                    btn.classList.add('from-green-600', 'to-green-500');
+                    
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1500);
+                } else {
+                    btn.disabled = false;
+                    btn.textContent = 'Verificar Cuenta';
+                    errorDiv.classList.remove('hidden');
+                    errorText.textContent = data.error || 'Error de verificación';
+                }
+            } catch (err) {
+                btn.disabled = false;
+                btn.textContent = 'Verificar Cuenta';
+                errorDiv.classList.remove('hidden');
+                errorText.textContent = 'Error de conexión. Intenta de nuevo.';
+            }
+        }
+
+        // Enter key
+        document.getElementById('captchaInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verify();
+        });
+    </script>
+
+</body>
+</html>

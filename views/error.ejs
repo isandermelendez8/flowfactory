@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Flow Factory RP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    </style>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-md w-full text-center">
+        <div class="w-24 h-24 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-12 h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </div>
+        
+        <h1 class="text-3xl font-bold mb-4 font-orbitron text-red-400">Error</h1>
+        <p class="text-gray-400 mb-8"><%= message %></p>
+        
+        <div class="flex flex-col gap-3">
+            <a href="/" class="bg-gradient-to-r from-red-600 to-blue-600 hover:from-red-500 hover:to-blue-500 py-3 rounded-xl font-semibold transition">
+                Volver al inicio
+            </a>
+            <% if (invite && invite !== '#') { %>
+                <a href="<%= invite %>" target="_blank" class="glass hover:bg-white/5 py-3 rounded-xl font-semibold transition border border-white/10">
+                    Unirse al Discord
+                </a>
+            <% } %>
+        </div>
+    </div>
+
+</body>
+</html>

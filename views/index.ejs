@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Factory RP - Panel de Whitelist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body { font-family: 'Manrope', sans-serif; background: #000; color: #fff; }
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+        .gradient-text { background: linear-gradient(135deg, #dc2626 0%, #3b82f6 50%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="bg-black min-h-screen">
+    <header class="fixed top-0 w-full z-50 glass border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="<%= typeof logo !== 'undefined' ? logo : 'https://cdn.discordapp.com/attachments/1512237319346720829/1527910879247728792/F9D0824B-0262-4885-A728-F3DF5003AC7E.png' %>" alt="Logo" class="w-10 h-10 object-contain">
+                <h1 class="font-bold text-white">Flow Factory<span class="text-blue-400">RP</span></h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <% if (user) { %>
+                    <div class="flex items-center gap-3">
+                        <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png"
+                             alt="Avatar" class="w-10 h-10 rounded-full border-2 border-red-500"
+                             onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                        <div class="hidden md:block">
+                            <p class="text-sm font-medium text-white"><%= user.username %></p>
+                        </div>
+                    </div>
+                    <a href="/dashboard" class="bg-gradient-to-r from-red-600 to-blue-600 px-4 py-2 rounded-lg text-sm font-semibold">Panel</a>
+                    <a href="/logout" class="text-gray-400 hover:text-white">Salir</a>
+                <% } else { %>
+                    <a href="/login" class="bg-gradient-to-r from-red-600 to-blue-600 px-6 py-2 rounded-lg font-semibold">Iniciar con Discord</a>
+                <% } %>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative min-h-screen flex items-center justify-center pt-16">
+        <div class="absolute inset-0 bg-gradient-to-b from-red-900/20 via-black to-black pointer-events-none"></div>
+        <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 glass rounded-full text-sm mb-6 border border-red-500/30">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span>Sistema de Whitelist Activo</span>
+            </div>
+            <img src="<%= typeof logo !== 'undefined' ? logo : 'https://cdn.discordapp.com/attachments/1512237319346720829/1527910879247728792/F9D0824B-0262-4885-A728-F3DF5003AC7E.png' %>" alt="Flow Factory" class="w-28 h-28 mx-auto mb-6 object-contain logo-glow">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 font-orbitron">
+                Bienvenido a<br>
+                <span class="gradient-text">Flow Factory RP</span>
+            </h1>
+            <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                Comunidad de roleplay seria. Haz whitelist, lee las reglas y entra a la ciudad.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <% if (user) { %>
+                    <a href="/whitelist" class="bg-gradient-to-r from-red-600 to-blue-600 px-8 py-4 rounded-xl font-bold text-lg">Hacer Whitelist</a>
+                    <a href="/rules" class="glass px-8 py-4 rounded-xl font-bold text-lg border border-white/10">Ver Normativas</a>
+                <% } else { %>
+                    <a href="/login" class="bg-gradient-to-r from-red-600 to-blue-600 px-8 py-4 rounded-xl font-bold text-lg">Iniciar Sesión con Discord</a>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 py-8">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-gray-400 text-sm">© 2026 Flow Factory RP. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

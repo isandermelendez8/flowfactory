@@ -35,7 +35,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production' || !!process.env.VERCEL,
+        sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
@@ -516,8 +517,11 @@ app.use((req, res) => {
     res.status(404).render('error', { message: 'Página no encontrada', invite: process.env.DISCORD_INVITE || '#' });
 });
 
-app.listen(PORT, () => {
-    console.log(`🌐 ${BRAND} Website → http://localhost:${PORT}`);
-});
+// En Vercel no hacemos listen (serverless). En local sí.
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`🌐 ${BRAND} Website → http://localhost:${PORT}`);
+    });
+}
 
 module.exports = app;
